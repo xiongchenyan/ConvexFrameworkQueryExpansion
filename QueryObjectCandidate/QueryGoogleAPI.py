@@ -41,7 +41,7 @@ class QueryGoogleAPIC(cxBaseC):
             qid,query = line.strip().split('\t')
             lObj = SearchFreebase(query)[:self.NumOfObjPerQ]
             for Obj in lObj:
-                print >> out, qid + '\t' + query + '\t' + Obj.GetId() + '\t' + Obj.GetName().encode('utf-8','ignore') + '\t%f'%(Obj.GetScore())
+                print >> out, qid + '\t' + query + '\t' + Obj.GetId().encode('utf-8','ignore') + '\t' + Obj.GetName().encode('utf-8','ignore') + '\t%f'%(Obj.GetScore())
         out.close()
         return True
     
