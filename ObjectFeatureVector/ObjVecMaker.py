@@ -123,6 +123,7 @@ class ObjVecMakerC(cxBaseC):
         #obj read start fill
         print "start fetching obj's topics"
         for i in range(len(lFbObj)):
+            print "fetching [%s]" %(lFbObj[i].GetId())
             lFbObj[i] = self.FbObjCacheCenter.FetchObj(lFbObj[i].GetId())
         
         return True
