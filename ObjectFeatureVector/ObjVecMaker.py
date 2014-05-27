@@ -34,7 +34,7 @@ class ObjVecMakerC(cxBaseC):
         self.FbObjCacheCenter = FbObjCacheCenterC()
         
     def SetConf(self,ConfIn):
-        conf = cxConf()
+        conf = cxConf(ConfIn)
         self.CtfCenter.Load(conf.GetConf('termctf'))
         self.Word2VecFile = conf.GetConf('word2vec')
         self.CateDenseCenter.load(conf.GetConf('cateattdense'))
