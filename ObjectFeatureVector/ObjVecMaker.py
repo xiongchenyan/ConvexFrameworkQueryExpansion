@@ -124,6 +124,9 @@ class ObjVecMakerC(cxBaseC):
         print "start fetching obj's topics"
         for i in range(len(lFbObj)):
             lFbObj[i] = self.FbObjCacheCenter.FetchObj(lFbObj[i].GetId())
+        
+        return True
+        
         print "fetched, start make vecs"
         #extract and dump
         
