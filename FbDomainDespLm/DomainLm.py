@@ -6,7 +6,7 @@ estimate the lm from the category desp file
 
 import site
 site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
-site.addsitedir('/bos/usr0/cx/PyCode/ConvexFrameworkdQueryExpansion')
+site.addsitedir('/bos/usr0/cx/PyCode/ConvexFrameworkQueryExpansion')
 
 from cxBase.base import cxBaseC,cxConf
 from IndriRelate.IndriInferencer import LmBaseC

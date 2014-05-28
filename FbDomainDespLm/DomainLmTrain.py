@@ -7,7 +7,7 @@ train it
 
 import site
 site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
-site.addsitedir('/bos/usr0/cx/PyCode/ConvexFrameworkdQueryExpansion')
+site.addsitedir('/bos/usr0/cx/PyCode/ConvexFrameworkQueryExpansion')
 
 from FbDomainDespLm.DomainLm import *
 
