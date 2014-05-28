@@ -48,7 +48,7 @@ class ObjVecMakerC(cxBaseC):
     
     def MakeLmVec(self,lFbObj):
         lVector = []
-        
+        print "start make lm vec"
         for FbObj in lFbObj:
             desp = FbObj.GetDesp()
             Lm = LmBaseC()
@@ -59,10 +59,11 @@ class ObjVecMakerC(cxBaseC):
                 Vector.hDim[term] = score
             Vector.Key = FbObj.GetId()
             lVector.append(Vector)
+        print "made"
         return lVector
     
     def MakeWord2Vec(self,lFbObj):
-        
+        print "start make word2vec" %(self.Word2VecFile)
         lObjId = [item.GetId() for item in lFbObj]
         hObjP = dict(zip(lObjId,range(len(lObjId))))
         lVector = []
@@ -88,17 +89,19 @@ class ObjVecMakerC(cxBaseC):
         #require the cate att cnt in APIBase
         #and the cate att distribution (empirical) center
         lVector = []
-        
+        print "start make cate att cnt vec"
         for FbObj in lFbObj:
             Vector = VectorC()
             Vector.Key = FbObj.GetId()
             hCate = FbObj.FormCategoryAttCnt()
+            print "cate for [%s]: \n%s" %(Vector.Key,json.dumps(Vector.hDim))
             for cate in hCate:
                 cnt = hCate[cate]
                 cdf = self.CateDenseCenter.GetProb(cate, cnt)
                 Vector.hDim[cate] = cdf
             Vector.Normalize()
             lVector.append(Vector)
+        print "made"
         return lVector
             
             
@@ -126,7 +129,7 @@ class ObjVecMakerC(cxBaseC):
             print "fetching [%s]" %(lFbObj[i].GetId())
             lFbObj[i] = self.FbObjCacheCenter.FetchObj(lFbObj[i].GetId())
         
-        return True
+#         return True
         
         print "fetched, start make vecs"
         #extract and dump
