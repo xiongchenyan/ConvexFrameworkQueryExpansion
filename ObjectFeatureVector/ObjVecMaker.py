@@ -55,7 +55,7 @@ class ObjVecMakerC(cxBaseC):
             Lm.SetFromRawText(desp)
             Vector = VectorC()
             for term in Lm.hTermTF:
-                score = Lm.GetTFProb(term) * math.log(1.0/self.CtfCenter(term))
+                score = Lm.GetTFProb(term) * math.log(1.0/self.CtfCenter.GetCtfProb(term))
                 Vector.hDim[term] = score
             Vector.Key = FbObj.GetId()
             lVector.append(Vector)
