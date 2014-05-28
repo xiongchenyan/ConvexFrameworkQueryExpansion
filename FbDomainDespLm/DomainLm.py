@@ -21,7 +21,11 @@ class DomainLmC(cxBaseC):
     def Train(self,InName):
         cnt = 0
         for line in open(InName):
-            cate,text = line.strip().split('\t')
+            vCol = line.strip().split('\t')
+            if len(vCol) < 2:
+                continue
+            cate = vCol[0]
+            text = vCol[1]
             if not cate in self.hDomain:
                 p = len(self.lDomain)
                 self.lDomain.append(cate)
