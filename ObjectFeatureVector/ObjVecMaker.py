@@ -59,7 +59,6 @@ class ObjVecMakerC(cxBaseC):
                 Vector.hDim[term] = score
             Vector.Key = FbObj.GetId()
             lVector.append(Vector)
-        print "made"
         return lVector
     
     def MakeWord2Vec(self,lFbObj):
@@ -101,7 +100,6 @@ class ObjVecMakerC(cxBaseC):
                 Vector.hDim[cate] = cdf
             Vector.Normalize()
             lVector.append(Vector)
-        print "made"
         return lVector
             
             
@@ -128,20 +126,22 @@ class ObjVecMakerC(cxBaseC):
         for i in range(len(lFbObj)):
             print "fetching [%s]" %(lFbObj[i].GetId())
             lFbObj[i] = self.FbObjCacheCenter.FetchObj(lFbObj[i].GetId())
+            lDespVec = self.MakeLmVec([lFbObj[i]])
+            lCateVec = self.MakeCateAttCntVec([lFbObj[i]])
+            print >> OutDesp,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t' + lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lDespVec[0].dumps()
+            print >> OutCate,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lCateVec[0].dumps()
+
+            
         
 #         return True
         
-        print "fetched, start make vecs"
+        print "fetched, lm and cate vecs made, start make vecs from word2vec"
         #extract and dump
         
-        lDespVec = self.MakeLmVec(lFbObj)
-        lCateVec = self.MakeCateAttCntVec(lFbObj)
         lWord2Vec = self.MakeWord2Vec(lFbObj)
         print "dumping"
         for i in range(len(lQidQuery)):
-            print >> OutDesp,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t' + lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lDespVec[i].dumps()
-            print >> OutCate,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lCateVec[i].dumps()
-            print >> OutWord2Vec,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lWord2Vec[i].dumps()
+                        print >> OutWord2Vec,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lWord2Vec[i].dumps()
         
         OutDesp.close()
         OutCate.close()
