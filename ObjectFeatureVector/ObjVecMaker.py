@@ -139,9 +139,9 @@ class ObjVecMakerC(cxBaseC):
         lWord2Vec = self.MakeWord2Vec(lFbObj)
         print "dumping"
         for i in range(len(lQidQuery)):
-            print >> OutDesp,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t' + lDespVec[i].dumps()
-            print >> OutCate,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t' + lCateVec[i].dumps()
-            print >> OutWord2Vec,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t' + lWord2Vec[i].dumps()
+            print >> OutDesp,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t' + lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lDespVec[i].dumps()
+            print >> OutCate,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lCateVec[i].dumps()
+            print >> OutWord2Vec,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lWord2Vec[i].dumps()
         
         OutDesp.close()
         OutCate.close()
