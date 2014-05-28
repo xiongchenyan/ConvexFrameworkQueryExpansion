@@ -128,8 +128,11 @@ class ObjVecMakerC(cxBaseC):
             lFbObj[i] = self.FbObjCacheCenter.FetchObj(lFbObj[i].GetId())
             lDespVec = self.MakeLmVec([lFbObj[i]])
             lCateVec = self.MakeCateAttCntVec([lFbObj[i]])
-            print >> OutDesp,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t' + lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lDespVec[0].dumps()
-            print >> OutCate,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lCateVec[0].dumps()
+            try:
+                print >> OutDesp,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t' + lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lDespVec[0].dumps()
+                print >> OutCate,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lCateVec[0].dumps()
+            except UnicodeEncodeError:
+                print "unicode encode error, discard"
 
             
         
@@ -141,7 +144,10 @@ class ObjVecMakerC(cxBaseC):
         lWord2Vec = self.MakeWord2Vec(lFbObj)
         print "dumping"
         for i in range(len(lQidQuery)):
-                        print >> OutWord2Vec,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lWord2Vec[i].dumps()
+            try:
+                print >> OutWord2Vec,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lWord2Vec[i].dumps()
+            except UnicodeEncodeError:
+                print "unicode encode error, discard"
         
         OutDesp.close()
         OutCate.close()
