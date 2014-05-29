@@ -30,8 +30,8 @@ class ObjectKMeansC(cxBaseC):
         self.k = int(conf.GetConf('k',self.k))
         self.MidDir = conf.GetConf('middir')
         self.Model = cxKMeansC()
-        self.Model.k = self.k
-        self.Model.workdir = self.MidDir
+        self.Model.SetK(self.k)
+        self.Model.SetWorkDir(self.MidDir)
         
     
     
