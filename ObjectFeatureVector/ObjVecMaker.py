@@ -88,8 +88,8 @@ class ObjVecMakerC(cxBaseC):
         lStop = ['/common']
         for item in lStop:
             if item == cate[:len(item)]:
-                return False
-        return True
+                return True
+        return False
     
     def MakeCateAttCntVec(self,lFbObj):
         #require the cate att cnt in APIBase
