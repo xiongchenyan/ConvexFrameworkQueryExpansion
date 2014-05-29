@@ -61,9 +61,9 @@ class ObjVecMakerC(cxBaseC):
             lVector.append(Vector)
         return lVector
     
-    def MakeWord2Vec(self,lFbObj):
+    def MakeWord2Vec(self,lFbObjId):
         print "start make word2vec [%s]" %(self.Word2VecFile)
-        lObjId = [item.GetId() for item in lFbObj]
+        lObjId = lFbObjId
         hObjP = dict(zip(lObjId,range(len(lObjId))))
         lVector = []
         for i in range(len(lObjId)):
@@ -123,39 +123,33 @@ class ObjVecMakerC(cxBaseC):
         OutWord2Vec = open(OutName + "_word2vec","w")
         
         lQidQuery = []
-        lFbObj = []
-        
+        lFbObjId = []
+        lFbObjName = []
         #read objid
         for line in open(InName):
             vCol = line.strip().split('\t')
             lQidQuery.append([vCol[0],vCol[1]])
-            lFbObj.append(FbApiObjectC(vCol[2],vCol[3])) #TBD: check if vCol[3] is name
-            
-        #obj read start fill
-        print "start fetching obj's topics"
-        for i in range(len(lFbObj)):
-            print "fetching [%s]" %(lFbObj[i].GetId())
-            lFbObj[i] = self.FbObjCacheCenter.FetchObj(lFbObj[i].GetId())
-            lDespVec = self.MakeLmVec([lFbObj[i]])
-            lCateVec = self.MakeCateAttCntVec([lFbObj[i]])
+            FbObj = FbApiObjectC(vCol[2],vCol[3])
+            lFbObjId.append(FbObj.GetId())
+            lFbObjName.append(FbObj.GetName())
+            lDespVec = self.MakeLmVec([FbObj])
+            lCateVec = self.MakeCateAttCntVec([FbObj])
             try:
-                print >> OutDesp,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t' + lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lDespVec[0].dumps()
-                print >> OutCate,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lCateVec[0].dumps()
+                print >> OutDesp,vCol[0] + "\t" + vCol[1] + '\t' + FbObj.GetId() + '\t' + FbObj.GetName() + '\t' + lDespVec[0].dumps()
+                print >> OutCate,vCol[0] + "\t" + vCol[1] + '\t'+ FbObj.GetId() + '\t' + FbObj.GetName() + '\t' + lCateVec[0].dumps()
             except UnicodeEncodeError:
                 print "unicode encode error, discard"
-
+            FbObj.clear()
             
-        
-#         return True
         
         print "fetched, lm and cate vecs made, start make vecs from word2vec"
         #extract and dump
         
-        lWord2Vec = self.MakeWord2Vec(lFbObj)
+        lWord2Vec = self.MakeWord2Vec(lFbObjId)
         print "dumping"
         for i in range(len(lQidQuery)):
             try:
-                print >> OutWord2Vec,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObj[i].GetId() + '\t' + lFbObj[i].GetName() + '\t' + lWord2Vec[i].dumps()
+                print >> OutWord2Vec,lQidQuery[i][0] + "\t" + lQidQuery[i][1] + '\t'+ lFbObjId[i] + '\t' + lFbObjName[i] + '\t' + lWord2Vec[i].dumps()
             except UnicodeEncodeError:
                 print "unicode encode error, discard"
         
