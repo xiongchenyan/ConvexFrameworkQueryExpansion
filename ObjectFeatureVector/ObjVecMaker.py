@@ -62,7 +62,7 @@ class ObjVecMakerC(cxBaseC):
         return lVector
     
     def MakeWord2Vec(self,lFbObj):
-        print "start make word2vec" %(self.Word2VecFile)
+        print "start make word2vec [%s]" %(self.Word2VecFile)
         lObjId = [item.GetId() for item in lFbObj]
         hObjP = dict(zip(lObjId,range(len(lObjId))))
         lVector = []

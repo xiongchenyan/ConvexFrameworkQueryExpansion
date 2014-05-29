@@ -16,7 +16,12 @@ class DomainLmC(cxBaseC):
         self.lLm = []
         self.lDomain = []
         self.hDomain = {}
-        
+        self.DomainLevel = 1
+    
+    def CateLoader(self,RawStr):
+        vCol = RawStr.strip('/').split('/')
+        res = '/' + '/'.join(vCol[:self.DomainLevel])
+        return res
         
     def Train(self,InName):
         cnt = 0
@@ -24,7 +29,7 @@ class DomainLmC(cxBaseC):
             vCol = line.strip().split('\t')
             if len(vCol) < 2:
                 continue
-            cate = vCol[0]
+            cate = self.CateLoader(vCol[0])
             text = vCol[1]
             if not cate in self.hDomain:
                 p = len(self.lDomain)
