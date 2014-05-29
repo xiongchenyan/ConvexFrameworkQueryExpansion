@@ -93,10 +93,11 @@ class ObjVecMakerC(cxBaseC):
             Vector = VectorC()
             Vector.Key = FbObj.GetId()
             hCate = FbObj.FormCategoryAttCnt()
-            print "cate for [%s]: \n%s" %(Vector.Key,json.dumps(Vector.hDim))
+            print "cate for [%s]: \n%s" %(Vector.Key,json.dumps(hCate))
             for cate in hCate:
                 cnt = hCate[cate]
                 cdf = self.CateDenseCenter.GetProb(cate, cnt)
+                print "cate [%s] prob[%f]" %(cate,cdf)
                 Vector.hDim[cate] = cdf
             Vector.Normalize()
             lVector.append(Vector)
