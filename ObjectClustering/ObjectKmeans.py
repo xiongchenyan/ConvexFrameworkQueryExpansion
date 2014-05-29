@@ -81,11 +81,12 @@ class ObjectKMeansC(cxBaseC):
         for lvCol in Reader:
             lvCol = self.DiscardBadLine(lvCol)
             lLabel = self.ProcessOneQ(lvCol)
-            cnt = 0
+            if len(lvCol) != len(lLabel):
+                print "clustering res label num [%d] != data [%d]" %(len(lLabel),len(lvCol))
+                break            
             for i in range(len(lvCol)):
                 vCol = lvCol[i]
-                vCol[4] = str(lLabel[cnt])
-                cnt += 1
+                vCol[4] = str(lLabel[i])
                 print >> out,'\t'.join(vCol)
                 
                 
