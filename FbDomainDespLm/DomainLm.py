@@ -10,7 +10,7 @@ site.addsitedir('/bos/usr0/cx/PyCode/ConvexFrameworkQueryExpansion')
 
 from cxBase.base import cxBaseC,cxConf
 from IndriRelate.IndriInferencer import LmBaseC
-
+from cxBase.TextBase import *
 class DomainLmC(cxBaseC):
     def Init(self):
         self.lLm = []
@@ -30,7 +30,7 @@ class DomainLmC(cxBaseC):
             if len(vCol) < 2:
                 continue
             cate = self.CateLoader(vCol[0])
-            text = vCol[1]
+            text = TextBaseC.RawClean(vCol[1])
             if not cate in self.hDomain:
                 p = len(self.lDomain)
                 self.lDomain.append(cate)
@@ -38,6 +38,8 @@ class DomainLmC(cxBaseC):
                 self.hDomain[cate] = p
             else:
                 p = self.hDomain[cate]
+            
+            
                 
             self.lLm[p].AddRawText(text)       
             cnt += 1
