@@ -84,6 +84,13 @@ class ObjVecMakerC(cxBaseC):
         return lVector
     
     
+    def IsStopCate(self,cate):
+        lStop = ['/common']
+        for item in lStop:
+            if item == cate[:len(item)]:
+                return False
+        return True
+    
     def MakeCateAttCntVec(self,lFbObj):
         #require the cate att cnt in APIBase
         #and the cate att distribution (empirical) center
@@ -95,6 +102,8 @@ class ObjVecMakerC(cxBaseC):
             hCate = FbObj.FormCategoryAttCnt()
             print "cate for [%s]: \n%s" %(Vector.Key,json.dumps(hCate))
             for cate in hCate:
+                if self.IsStopCate(cate):
+                    continue
                 cnt = hCate[cate]
                 cdf = self.CateDenseCenter.GetProb(cate, cnt)
                 print "cate [%s] prob[%f]" %(cate,cdf)
