@@ -3,7 +3,10 @@ Created on May 28, 2014
 
 @author: cx
 '''
-
+import site
+site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
+site.addsitedir('/bos/usr0/cx/PyCode/ConvexFrameworkQueryExpansion')
+site.addsitedir('/bos/usr0/cx/PyCode/cxMachineLearning')
 
 from Clustering.KMeans import *
 from cxBase.Vector import *
