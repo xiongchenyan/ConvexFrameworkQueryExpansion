@@ -35,13 +35,12 @@ class ObjectKMeansC(cxBaseC):
         
     
     
-    def CreateSpMtx(self,lLines):
+    def CreateSpMtx(self,lvCol):
         data = []
         hFeatureIndex = {}
         
         DataIndex= 1
-        for line in lLines:
-            vCol = line.strip().split('\t')
+        for vCol in lvCol:
             hFeature = json.loads(vCol[4])
             for Feature in hFeature:
                 FeatureP = len(hFeatureIndex) + 1
@@ -55,21 +54,20 @@ class ObjectKMeansC(cxBaseC):
             
         
         
-    def ProcessOneQ(self,lLines):
-        data = self.CreateSpMtx(lLines)
+    def ProcessOneQ(self,lvCol):
+        data = self.CreateSpMtx(lvCol)
         lLabel = self.Model.ProcessData(data)
         return lLabel
     
     
-    def DiscardBadLine(self,lLines):
+    def DiscardBadLine(self,lvCol):
         lRes = []
-        for line in lLines:
-            if '{}' in line:
-                continue
-            vCol = line.strip().split('\t')
+        for vCol in lvCol:
             if len(vCol) < 5:
                 continue
-            lRes.append(line)
+            if '{}' in vCol[4]:
+                continue
+            lRes.append(vCol)
         return lRes
         
     
@@ -80,13 +78,12 @@ class ObjectKMeansC(cxBaseC):
         
         out = open(self.OutName,'w')
         
-        for lLines in Reader:
-            lLines = self.DiscardBadLine(lLines)
-            lLabel = self.ProcessOneQ(lLines)
+        for lvCol in Reader:
+            lvCol = self.DiscardBadLine(lvCol)
+            lLabel = self.ProcessOneQ(lvCol)
             cnt = 0
-            for i in range(len(lLines)):
-                line = lLines[i]
-                vCol = line.strip().split('\t')
+            for i in range(len(lvCol)):
+                vCol = lvCol[i]
                 vCol[4] = str(lLabel[cnt])
                 cnt += 1
                 print >> out,'\t'.join(vCol)
