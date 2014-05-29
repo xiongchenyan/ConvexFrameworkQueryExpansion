@@ -77,7 +77,7 @@ class ObjVecMakerC(cxBaseC):
         for word2vec in reader:
             if not word2vec.word in hObjP:
                 continue
-            p = hObjP(word2vec.word)
+            p = hObjP[word2vec.word]
             lVector[p].hDim = word2vec.hDim
             print "get [%s]" %(lVector[p].Key)
         reader.close()
@@ -129,7 +129,7 @@ class ObjVecMakerC(cxBaseC):
         for line in open(InName):
             vCol = line.strip().split('\t')
             lQidQuery.append([vCol[0],vCol[1]])
-            FbObj = FbApiObjectC(vCol[2],vCol[3])
+            FbObj = self.FbObjCacheCenter.FetchObj(vCol[2])
             lFbObjId.append(FbObj.GetId())
             lFbObjName.append(FbObj.GetName())
             lDespVec = self.MakeLmVec([FbObj])
