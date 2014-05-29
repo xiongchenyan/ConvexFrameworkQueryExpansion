@@ -80,5 +80,10 @@ class DomainLmC(cxBaseC):
             Sum += lProb[i]
             
         for i in range(len(lProb)):
-            lProb[i] /= Sum 
-        return lProb 
+            lProb[i] /= Sum
+        lRes = []
+        for i in range(len(lProb)):
+            lRes.append([self.lDomain[i],lProb[i]])
+        lRes.sort(key = lambda item: item[1],Reverse = True)
+             
+        return lRes
