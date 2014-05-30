@@ -80,6 +80,8 @@ class ObjectKMeansC(cxBaseC):
         
         for lvCol in Reader:
             lvCol = self.DiscardBadLine(lvCol)
+            if len(lvCol) == 0:
+                continue
             lLabel = self.ProcessOneQ(lvCol)
             if len(lvCol) != len(lLabel):
                 print "[%s][%s]clustering res label num [%d] != data [%d]" %(lvCol[0][0],lvCol[0][1],len(lLabel),len(lvCol))
