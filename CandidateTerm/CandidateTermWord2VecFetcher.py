@@ -37,7 +37,7 @@ out = open(sys.argv[3],'w')
 for i in range(len(lExpTerm)):
     hFeature = {}
     for item,value in lWordVec[i].hDim.items():
-        hFeature['word2vec_' + item] = value
+        hFeature['word2vec_' + str(item)] = value
     lExpTerm[i].AddFeature(hFeature)
     print >> out, lExpTerm[i].dumps()
     
