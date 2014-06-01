@@ -37,7 +37,7 @@ class CandidateTermKMeansC(cxBaseC):
     def CreateMtx(self,lExpTerm):
         data = []
         for i in range(len(lExpTerm)):
-            for feature,value in lExpTerm[i].hFeature:
+            for feature,value in lExpTerm[i].hFeature.items():
                 if not 'word2vec' in feature:
                     continue
                 p = int(feature.split('_')[1])
