@@ -22,7 +22,7 @@ class QObjClusterC(object):
         self.lObjName = []
         self.ClusterLm = LmBaseC()
         
-    def __init__(self,qid='',query='',ClusterId):
+    def __init__(self,qid='',query='',ClusterId=""):
         self.Init()
         self.qid = qid
         self.query = query
