@@ -84,8 +84,4 @@ class QObjClusterC(object):
     
 
 
-class ObjClusterBaseC(cxBaseC):
-    
-    @staticmethod
-    def CalcObjCenterDistance(ClusterIn,VectorIn,OutName):
         
