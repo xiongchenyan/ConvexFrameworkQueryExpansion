@@ -36,7 +36,6 @@ class QObjClusterC(object):
         for i in range(len(self.lObjId)):
             desp = ObjCenter.FetchObjDesp(self.lObjId[i])
             Lm = LmBaseC(desp)
-            print json.dumps(type(self.ClusterLm))
             self.ClusterLm += Lm * self.lObjScore[i]
         return self.ClusterLm
         
