@@ -73,7 +73,7 @@ class QObjClusterC(object):
                 ObjName = vCol[3]
                 Cluster = int(vCol[4])
                 p = Cluster - 1
-                while len(lQCluster) < p:
+                while len(lQCluster) <= p:
                     lQCluster.append(QObjClusterC(qid,query,Cluster))
                 lQCluster[p].lObjId.append(ObjId)
                 lQCluster[p].lObjName.append(ObjName)
