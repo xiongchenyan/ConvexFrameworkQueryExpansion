@@ -71,6 +71,24 @@ class ClusterGoodBadTermC(cxBaseC):
                 BadProb += Prob
         return [GoodProb,BadProb,NeutralProb]
         
+        
+    def MatchExpTermAndCluster(self,llExpTerm,llQCluster):
+        lA = []
+        lB = []
+        
+        a = 0
+        b = 0
+        while (a < len(llExpTerm)) & (b < len(llQCluster)):
+            if int(llExpTerm[a][0].qid) < int(llQCluster[b][0].qid):
+                a += 1
+                continue
+            if int(llExpTerm[a][0].qid) > int(llQCluster[b][0].qid):
+                b += 1
+                continue
+            lA.append(llExpTerm[a])
+            lB.append(llExpTerm[b])        
+        return lA,lB
+        
     
     def Process(self):
         llExpTerm = ReadQExpTerms(self.QExpInName)
@@ -78,8 +96,11 @@ class ClusterGoodBadTermC(cxBaseC):
         llQCluster = QObjClusterC().LoadClusterLms(self.ClusterLmInName)
         #llExpTerm and llQCluster are matched by qid sorted
         
-        out = open(self.OutName,'w')
+        llExpTerm,llQCluster = self.MatchExpTermAndCluster(llExpTerm,llQCluster)
         
+        
+        out = open(self.OutName,'w')
+        p = 0
         for i in range(len(llExpTerm)):
             lExpTerm = llExpTerm[i]
             lQCluster = llQCluster[i]            
