@@ -18,7 +18,7 @@ from FbObjCenter.FbObjCacheCenter import *
 from cxBase.KeyFileReader import KeyFileReaderC 
 from ObjectClustering.ObjClusterBase import *
 
-
+import ntpath
 import sys
 
 if 2 > len(sys.argv):
@@ -30,18 +30,23 @@ if 2 > len(sys.argv):
     
 ObjCenter = FbObjCacheCenterC(sys.argv[1])
 conf = cxConf(sys.argv[1])
-InName=conf.GetConf('in')
+lInName=conf.GetConf('in')
+
+if type(lInName) != list:
+    lInName = [lInName]
+
 OutName = conf.GetConf('out')
-out = open(OutName,'w')
-llQCluster = QObjClusterC.LoadQObjCluster(InName)
-for i in range(len(llQCluster)):
-    for j in range(len(llQCluster[i])):
-        print "working on q[%s][%d]" %(llQCluster[i][j].qid,llQCluster[i][j].ClusterId)
-        print "contain [%d] obj" %(len(llQCluster[i][j].lObjId))
-        llQCluster[i][j].FormLmForCluster(ObjCenter)
-        print >>out, llQCluster[i][j].DumpsClusterLm()
-        
-out.close()
+for InName in lInName:
+    print "working [%s]" %(InName)
+    out = open(OutName + "_" + ntpath.basename(InName),'w')
+    llQCluster = QObjClusterC.LoadQObjCluster(InName)
+    for i in range(len(llQCluster)):
+        for j in range(len(llQCluster[i])):
+            print "working on q[%s][%d]" %(llQCluster[i][j].qid,llQCluster[i][j].ClusterId)
+            print "contain [%d] obj" %(len(llQCluster[i][j].lObjId))
+            llQCluster[i][j].FormLmForCluster(ObjCenter)
+            print >>out, llQCluster[i][j].DumpsClusterLm()
+    out.close()
 print "done"
 
     
