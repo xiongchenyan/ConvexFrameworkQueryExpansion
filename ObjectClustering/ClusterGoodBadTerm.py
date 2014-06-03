@@ -86,7 +86,7 @@ class ClusterGoodBadTermC(cxBaseC):
                 b += 1
                 continue
             lA.append(llExpTerm[a])
-            lB.append(llExpTerm[b])
+            lB.append(llQCluster[b])
             a += 1
             b += 1        
         return lA,lB
