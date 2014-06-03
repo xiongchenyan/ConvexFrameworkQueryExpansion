@@ -16,7 +16,7 @@ import site
 site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
 site.addsitedir('/bos/usr0/cx/PyCode/ConvexFrameworkQueryExpansion')
 site.addsitedir('/bos/usr0/cx/PyCode/GoogleAPI')
-
+site.addsitedir('/bos/usr0/cx/PyCode/QueryExpansion')
 from cxBase.base import cxConf,cxBaseC
 from cxBase.KeyFileReader import KeyFileReaderC
 from IndriRelate.IndriInferencer import LmBaseC
