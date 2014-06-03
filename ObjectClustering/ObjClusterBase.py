@@ -51,7 +51,7 @@ class QObjClusterC(object):
         vCol = line.strip().split('\t')
         self.qid = vCol[0]
         self.query = vCol[1]
-        self.Cluster = int(vCol[2])
+        self.ClusterId = int(vCol[2])
         self.ClusterLm.loads('\t'.join(vCol[3:]))
         return True
     
