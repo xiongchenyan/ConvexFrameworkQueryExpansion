@@ -58,7 +58,7 @@ class ClusterGoodBadTermC(cxBaseC):
         BadProb = 0
         NeutralProb = 0
         
-        for term in QCluster.ClusterLm:
+        for term in QCluster.ClusterLm.hTermTF:
             Prob = QCluster.ClusterLm.GetTfProb(term)
             if not term in hTerm:
                 continue
