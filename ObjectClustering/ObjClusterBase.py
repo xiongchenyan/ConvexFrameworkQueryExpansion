@@ -11,6 +11,7 @@ from cxBase.base import cxBaseC,cxConf
 from FbObjCenter.FbObjCacheCenter import *
 from cxBase.KeyFileReader import KeyFileReaderC
 from IndriRelate.IndriInferencer import LmBaseC
+from cxBase.TextBase import *
 import json
 class QObjClusterC(object):
     def Init(self):
@@ -35,7 +36,7 @@ class QObjClusterC(object):
             
         for i in range(len(self.lObjId)):
             desp = ObjCenter.FetchObjDesp(self.lObjId[i])
-            Lm = LmBaseC(desp)
+            Lm = LmBaseC(TextBaseC.RawClean(desp))
             self.ClusterLm += Lm * self.lObjScore[i]
         return self.ClusterLm
         
