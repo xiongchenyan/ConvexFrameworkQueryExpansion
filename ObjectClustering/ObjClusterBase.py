@@ -47,6 +47,38 @@ class QObjClusterC(object):
         return res
     
     
+    def LoadsClusterLm(self,line):
+        vCol = line.strip().split('\t')
+        self.qid = vCol[0]
+        self.query = vCol[1]
+        self.Cluster = int(vCol[2])
+        self.ClusterLm.loads('\t'.join(vCol[3:]))
+        return True
+    
+    
+    @staticmethod
+    def LoadClusterLms(InName):
+        #read clusters
+        #lQCluster[(qid)[clusters]]
+        reader = KeyFileReaderC()
+        reader.open(InName)
+        llQCluster = []
+        for lvCol in reader:
+            lQCluster = []
+            for vCol in lvCol:
+                Cluster = QObjClusterC()
+                Cluster.LoadsClusterLm('\t'.join(vCol))
+                lQCluster.append(Cluster)
+            llQCluster.append(lQCluster)
+        llQCluster.sort(key=lambda item:int(item[0].qid))
+        reader.close()
+        return llQCluster
+        
+        
+        
+        
+        
+    
     def FormObjScore(self,VectorInName = ""):
         if [] == self.lObjId:
             return
