@@ -50,6 +50,10 @@ def ProcessOneQuery(lObjvCol,lClustervCol):
     
     lResvCol = []
     for vCol in lObjvCol:
+        if not vCol[2] in hObjCluster:
+            vCol.extend(['0','0'])
+            lResvCol.append(vCol)
+            continue
         ClusterId = hObjCluster[vCol[2]]
         ClusterScore = hClusterScore[ClusterId]
         vCol.extend([ClusterId,str(ClusterScore)])
