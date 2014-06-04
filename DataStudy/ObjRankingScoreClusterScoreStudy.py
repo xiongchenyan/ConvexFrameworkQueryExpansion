@@ -52,7 +52,7 @@ def ProcessOneQuery(lObjvCol,lClustervCol):
     for vCol in lObjvCol:
         ClusterId = hObjCluster[vCol[2]]
         ClusterScore = hClusterScore[ClusterId]
-        vCol.extend([ClusterId,ClusterScore])
+        vCol.extend([ClusterId,float(ClusterScore)])
         lResvCol.append(vCol)
     return lResvCol
 
