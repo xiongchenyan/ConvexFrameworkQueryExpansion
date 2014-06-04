@@ -78,8 +78,8 @@ llClustervCol = []
 for lvCol in ClusterReader:
     llClustervCol.append(lvCol)
     
-llScorevCol.sort(lambda item:int(item[0][0]))
-llClustervCol.sort(lambda item:int(item[0][0]))
+llScorevCol.sort(key=lambda item:int(item[0][0]))
+llClustervCol.sort(key=lambda item:int(item[0][0]))
 
 
 
