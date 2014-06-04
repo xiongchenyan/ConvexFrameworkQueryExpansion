@@ -6,7 +6,7 @@ output: object ranking score \t cluster id \t average ranking score in this clus
 '''
 
 import site
-site.addsitedir('/bos/usr0/PyCode/cxPyLib')
+site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
 from cxBase.KeyFileReader import *
 import sys
 
