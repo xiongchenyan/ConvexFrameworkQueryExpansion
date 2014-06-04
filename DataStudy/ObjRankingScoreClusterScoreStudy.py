@@ -66,7 +66,7 @@ if 4 != len(sys.argv):
 ScoreReader = KeyFileReaderC()
 ScoreReader.open(sys.argv[1])
 ClusterReader = KeyFileReaderC()
-ClusterReader.open(sys.argv[1])
+ClusterReader.open(sys.argv[2])
 
 out = open(sys.argv[3],'w')
 
