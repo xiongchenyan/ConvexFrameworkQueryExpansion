@@ -11,6 +11,12 @@ qid\tquery\tcluster id\tgood prob \t bad prob \t neutral prob
 @author: cx
 '''
 
+'''
+update: allow multiple input and output will be used as an initial
+add Good-bad score
+sort cluster by good-bad
+'''
+
 
 import site
 site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
@@ -22,11 +28,13 @@ from cxBase.KeyFileReader import KeyFileReaderC
 from IndriRelate.IndriInferencer import LmBaseC
 from ObjectClustering.ObjClusterBase import *
 from base.ExpTerm import *
+import ntpath
+
 
 class ClusterGoodBadTermC(cxBaseC):
     def Init(self):
         self.QExpInName = ""
-        self.ClusterLmInName = ""
+        self.lClusterLmInName = []
         self.OutName = ""
         
     @staticmethod
@@ -36,7 +44,9 @@ class ClusterGoodBadTermC(cxBaseC):
     def SetConf(self,ConfIn):
         conf = cxConf(ConfIn)
         self.QExpInName = conf.GetConf('qexp')
-        self.ClusterLmInName = conf.GetConf('clusterlm')
+        self.lClusterLmInName = conf.GetConf('clusterlm')
+        if type(self.lClusterLmInName) == list:
+            self.lClusterLmInName = [self.lClusterLmInName]
         self.OutName = conf.GetConf('out')
         
         
@@ -94,26 +104,26 @@ class ClusterGoodBadTermC(cxBaseC):
     
     def Process(self):
         llExpTerm = ReadQExpTerms(self.QExpInName)
-        llExpTerm.sort(key=lambda item:int(item[0].qid))        
-        llQCluster = QObjClusterC().LoadClusterLms(self.ClusterLmInName)
-        #llExpTerm and llQCluster are matched by qid sorted
+        llExpTerm.sort(key=lambda item:int(item[0].qid))
         
-        llExpTerm,llQCluster = self.MatchExpTermAndCluster(llExpTerm,llQCluster)
-        
-        
-        out = open(self.OutName,'w')
-        p = 0
-        for i in range(len(llExpTerm)):
-            lExpTerm = llExpTerm[i]
-            lQCluster = llQCluster[i]            
-            hTerm = self.FormTermPerformDict(lExpTerm)
+        for ClusterLmInName in self.lClusterLmInName:                
+            llQCluster = QObjClusterC().LoadClusterLms(ClusterLmInName)
+            #llExpTerm and llQCluster are matched by qid sorted
+            llThisExpTerm,llQCluster = self.MatchExpTermAndCluster(llExpTerm,llQCluster)
+            out = open(self.OutName + "_%s" %(ntpath.basename(ClusterLmInName)),'w')
+
+            for i in range(len(llThisExpTerm)):
+                lExpTerm = llThisExpTerm[i]
+                lQCluster = llQCluster[i]            
+                hTerm = self.FormTermPerformDict(lExpTerm)
+                lRes = []
+                for QCluster in lQCluster:
+                    GoodProb,BadProb,NeutralProb = self.CalcClusterGoodBadFrac(QCluster, hTerm)
+                    lRes.append(QCluster.qid + '\t' + QCluster.query + '\t%d\t' %(QCluster.ClusterId) + '%f\t%f\t%f\t%f' %(GoodProb,BadProb,NeutralProb,GoodProb - BadProb))
+                lRes.sort(key=lambda item:float(item.split('\t')[6]),reverse = True)    
+                print >>out, '\n'.join(lRes)
             
-            for QCluster in lQCluster:
-                GoodProb,BadProb,NeutralProb = self.CalcClusterGoodBadFrac(QCluster, hTerm)
-                print >>out, QCluster.qid + '\t' + QCluster.query + '\t%d\t' %(QCluster.ClusterId) + '%f\t%f\t%f' %(GoodProb,BadProb,NeutralProb) 
-            
-            
-        out.close()
+            out.close()
         
         return True
             
