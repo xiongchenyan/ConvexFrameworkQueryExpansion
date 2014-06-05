@@ -71,7 +71,7 @@ class ClusterAsmObjRankingC(cxBaseC):
     
     
     def LoadObjCluster(self,ObjClusterIn):
-        llQCluster = QObjClusterC.LoadQObjCluster(self.ObjClusterIn)
+        llQCluster = QObjClusterC.LoadQObjCluster(ObjClusterIn)
         llQCluster = QObjClusterC.SetObjRankingScore(llQCluster, self.ObjRankIn)
         
         
