@@ -45,7 +45,7 @@ class ClusterGoodBadTermC(cxBaseC):
         conf = cxConf(ConfIn)
         self.QExpInName = conf.GetConf('qexp')
         self.lClusterLmInName = conf.GetConf('clusterlm')
-        if type(self.lClusterLmInName) == list:
+        if type(self.lClusterLmInName) != list:
             self.lClusterLmInName = [self.lClusterLmInName]
         self.OutName = conf.GetConf('out')
         
