@@ -22,7 +22,7 @@ from cxBase.Conf import cxConfC
 from cxBase.KeyFileReader import KeyFileReaderC
 import json
 from ObjectClustering.ObjClusterBase import *
-
+import ntpath
 
 
 class ClusterAsmObjRankingC(cxBaseC):
@@ -93,7 +93,7 @@ class ClusterAsmObjRankingC(cxBaseC):
     
     def ProcessOneClusterMethod(self,ObjClusterIn):
         
-        out = open(self.OutPre + '_' + ObjClusterIn,'w')
+        out = open(self.OutPre + '_' + ntpath.basename(ObjClusterIn),'w')
         
         reader = KeyFileReaderC()
         reader.open(self.ObjRankIn)
