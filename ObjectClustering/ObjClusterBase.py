@@ -19,7 +19,7 @@ class QObjClusterC(object):
         self.query = ""
         self.ClusterId = 1
         self.lObjId = []
-        self.lObjScore = []
+        self.lObjScore = [] #Obj's ranking score
         self.lObjName = []
         self.ClusterLm = LmBaseC()
         
@@ -56,6 +56,18 @@ class QObjClusterC(object):
         return True
     
     
+    def MaxRankingScore(self):
+        return max(self.lObjScore)
+    
+    def MeanRankingScore(self):
+        if len(self.lObjScore) == 0:
+            return 0
+        return sum(self.lObjScore) / float(len(self.lObjScore))
+    
+    
+    def ClusterSize(self):
+        return len(self.lObjId)
+    
     @staticmethod
     def LoadClusterLms(InName):
         #read clusters
@@ -79,16 +91,43 @@ class QObjClusterC(object):
         
         
     
-    def FormObjScore(self,VectorInName = ""):
+    def FormObjScore(self,hObjScore = {}):
+        #ObjScore fill as ranking score
         if [] == self.lObjId:
             return
         self.lObjScore = [1.0/len(self.lObjId)] * len(self.lObjId)
-        if "" != VectorInName:
-            print "not implemented"
+        if {} != hObjScore:
+            for i in range(len(self.lObjId)):
+                Key = self.qid + "\t" + self.lObjId[i]
+                if Key in hObjScore:
+                    self.lObjScore[i] = hObjScore[Key]
+                else:
+                    self.lObjScore[i] = 0
         return
-        
+
     
     
+    
+    
+    
+    
+    
+    @staticmethod
+    def SetObjRankingScore(llQCluster,QObjRankingScoreIn):
+        #form hObjScore
+        #set for each cluster
+        hObjScore = {}
+        for line in open(QObjRankingScoreIn):
+            vCol = line.strip().split('\t')
+            Key = vCol[0] + '\t' + vCol[2]
+            score = float(vCol[4])
+            hObjScore[Key] = score
+            
+        for  i in range(len(llQCluster)):
+            for j in range(len(llQCluster[i])):
+                llQCluster[i][j].FormObjScore(hObjScore)
+                
+        return llQCluster
     
         
     @staticmethod

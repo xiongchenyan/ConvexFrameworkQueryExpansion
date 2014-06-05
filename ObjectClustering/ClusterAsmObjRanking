@@ -1,0 +1,149 @@
+'''
+Created on Jun 5, 2014
+only keep the top cluster's objects
+top can be: mean, size for now
+in:
+    q obj ranking
+    cluster results (support multiple input)
+    clustering top definition (mean, size)
+out:
+    q obj ranking, with only top clusters
+    
+#focus on facc for now
+@author: cx
+'''
+
+import site
+site.addsitedir('/bos/usr0/cx/PyCode/cxPyLib')
+site.addsitedir('/bos/usr0/cx/PyCode/ConvexFrameworkQueryExpansion')
+site.addsitedir('/bos/usr0/cx/PyCode/GoogleAPI')
+from cxBase.base import cxBaseC
+from cxBase.Conf import cxConfC
+from cxBase.KeyFileReader import KeyFileReaderC
+import json
+from ObjectClustering.ObjClusterBase import *
+
+
+
+class ClusterAsmObjRankingC(cxBaseC):
+    
+    def Init(self):
+        self.ObjRankIn = ""
+        self.lObjClusterIn = ""
+        self.TopClusterDef = "size"
+        self.OutPre =""
+        
+    @staticmethod
+    def ShowConf():
+        print "objrankin\nobjclusterin\ntopcluster size|mean\nout"
+        
+    def SetConf(self,ConfIn):
+        conf = cxConfC(ConfIn)
+        self.ObjRankIn = conf.GetConf('objrankin')
+        self.lObjClusterIn = conf.GetConf('objclusterin')
+        self.TopClusterDef = conf.GetConf('topcluster')
+        self.OutPre = conf.GetConf('out')
+        
+        if type(self.lObjClusterIn) != list:
+            self.lObjClusterIn = [self.lObjClusterIn]
+            
+            
+    
+    def CalcPickScore(self,QCluster):
+        if self.TopClusterDef == 'size':
+            return QCluster.ClusterSize()
+        if self.TopClusterDef == 'mean':
+            return QCluster.MeanRankingScore()
+        return 0
+    
+    def PickTopCluster(self,llQCluster):
+        #for each lQCluster, only keep its best one
+        lTopCluster = []
+        for lQCluster in llQCluster:
+            BestCluster = lQCluster[0]
+            for QCluster in lQCluster:
+                if self.CalcPickScore(BestCluster) < self.CalcPickScore(QCluster):
+                    BestCluster = QCluster
+            print "qid [%s] best cluster [%s][%f]" %(BestCluster.qid,BestCluster.ClusterId,
+                                                     self.CalcPickScore(BestCluster))
+            lTopCluster.append(BestCluster)
+        return lTopCluster
+    
+    
+    def LoadObjCluster(self,ObjClusterIn):
+        llQCluster = QObjClusterC.LoadQObjCluster(self.ObjClusterIn)
+        llQCluster = QObjClusterC.SetObjRankingScore(llQCluster, self.ObjRankIn)
+        
+        
+        hQPos = {}
+        for i in range(len(llQCluster)):
+            hQPos[llQCluster[i][0].qid] = i
+            
+        return llQCluster,hQPos
+    
+    
+    def FilterOneQuery(self,lvCol,TopCluster):
+        lResCol = []
+        for vCol in lvCol:
+            if vCol[2] in TopCluster.lObjId:
+                lResCol.append(vCol)
+        print "q[%s] left [%d]/[%d] obj" %(lvCol[0][0],len(lResCol),len(lvCol))
+        return lResCol
+    
+    
+    def ProcessOneClusterMethod(self,ObjClusterIn):
+        
+        out = open(self.OutPre + '_' + ObjClusterIn,'w')
+        
+        reader = KeyFileReaderC()
+        reader.open(self.ObjRankIn)
+        
+        llQCluster,hPos = self.LoadObjCluster(ObjClusterIn)
+        lTopCluster = self.PickTopCluster(llQCluster)
+        
+        for lvCol in reader:
+            qid = lvCol[0][0]
+            if qid in hPos:
+                lResCol = self.FilterOneQuery(lvCol, lTopCluster[hPos[qid]])
+            else:
+                lResCol = lvCol
+            
+            for vCol in lResCol:
+                print >>out, '\t'.join(vCol)
+        out.close()
+        
+        
+    def Process(self):
+        for ObjClusterIn in self.lObjClusterIn:
+            print "working on cluster [%s]" %(ObjClusterIn)
+            self.ProcessOneClusterMethod(ObjClusterIn)
+        print "finished"
+        
+        
+        
+import sys
+if 2 != len(sys.argv):
+    print "conf"
+    ClusterAsmObjRankingC.ShowConf()
+    sys.exit()
+    
+Ranker = ClusterAsmObjRankingC(sys.argv[1])
+Ranker.Process()
+
+            
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    
+    
