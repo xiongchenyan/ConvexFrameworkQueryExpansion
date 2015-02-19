@@ -14,7 +14,7 @@ site.addsitedir('/bos/usr0/cx/PyCode/ConvexFrameworkQueryExpansion')
 site.addsitedir('/bos/usr0/cx/PyCode/GoogleAPI')
 from cxBase.base import cxBaseC,cxConf
 from IndriRelate.IndriInferencer import LmBaseC
-from FbObjCenter.FbObjCacheCenter import *
+from ObjCenter.FbObjCacheCenter import *
 from cxBase.KeyFileReader import KeyFileReaderC 
 from ObjectClustering.ObjClusterBase import *
 

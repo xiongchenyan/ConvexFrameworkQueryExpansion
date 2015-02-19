@@ -17,7 +17,7 @@ from GoogleFreebaseAPI.APIBase import *
 from IndriRelate.CtfLoader import TermCtfC
 from word2vec.WordVecBase import *
 from FreebaseDump.CateAttCntDensityCenter import *
-from FbObjCenter.FbObjCacheCenter import *
+from ObjCenter.FbObjCacheCenter import *
 #an import of the category probability
 #an import of the word2vec reader
 
